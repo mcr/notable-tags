@@ -178,7 +178,8 @@ algorithms employed {{?I-D.ietf-cose-rfc8152bis-algs}}.
 
 {{!RFC8392}} defines the CBOR Web Token (CWT), making use of COSE to
 define a CBOR variant of the JOSE Web Token (JWT), {{?RFC7519}}, a
-standardized security token that has found use 
+standardized security token that has found use in the area of web
+applications, but is not technically limited to those.
 
 | Tag number | Tag content          | Short Description    |
 |         61 | CBOR Web Token (CWT) | CBOR Web Token (CWT) |
