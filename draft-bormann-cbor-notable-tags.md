@@ -3,7 +3,7 @@ title: >
   Notable CBOR Tags
 abbrev: Notable CBOR Tags
 docname: draft-bormann-cbor-notable-tags-latest
-# date: 2020-05-16
+# date: 2021-02-12
 
 stand_alone: true
 
@@ -452,7 +452,7 @@ IANA Considerations
 In the registry {{-tags}},
 IANA has allocated the first to third tag in {{tab-tag-values}} from the
 FCFS space, with the present document as the specification reference.
-IANA is requested to register the fourth tag from the Specification
+IANA has allocated the fourth tag from the Specification
 Required space, with the present document as the specification reference.
 
 |                  Tag | Data Item    | Semantics                      | Reference                                         |
