@@ -32,16 +32,16 @@ contributor:
 
 
 normative:
-  RFC7049: orig
-  I-D.ietf-cbor-7049bis: bis
+  RFC8949: bis
   IANA.cbor-tags: tags
-#  RFC8610: cddl
+  RFC8610: cddl
 
 informative:
-  RFC4122:
-  RFC8742: seq
   RFC2045: mime
-
+  RFC4122: uuid
+  RFC7049: orig
+  RFC8742: seq
+  I-D.bormann-cbor-time-tag: time-tag
 --- abstract
 
 The Concise Binary Object Representation (CBOR, RFC 7049) is a data
@@ -217,7 +217,7 @@ protocol elements.
 ## DOTS
 
 DDoS Open Threat Signaling (DOTS) defines tag number 271 for the DOTS
-signal channel object in {{!I-D.ietf-dots-signal-channel}}.
+signal channel object in {{!RFC8782}}.
 
 ## RAINS
 
@@ -324,16 +324,38 @@ reproduced in {{arraytags}}.
 
 Additional tag definitions have been provided for date and time values.
 
-|  Tag | Data Item   | Semantics                          | Reference                         |
-|  100 | integer     | date in number of days since epoch | {{?I-D.ietf-cbor-date-tag}} |
-| 1004 | text string | RFC 3339 full-date string          | {{?I-D.ietf-cbor-date-tag}}  |
-| 1001 | map         | extended time                      | {{?I-D.bormann-cbor-time-tag}}    |
-| 1002 | map         | duration                           | {{?I-D.bormann-cbor-time-tag}}    |
-| 1003 | map         | period                             | {{?I-D.bormann-cbor-time-tag}}    |
+|  Tag | Data Item   | Semantics                          | Reference     |
+|  100 | integer     | date in number of days since epoch | {{?RFC8943}}  |
+| 1004 | text string | RFC 3339 full-date string          | {{?RFC8943}}  |
+| 1001 | map         | extended time                      | {{-time-tag}} |
+| 1002 | map         | duration                           | {{-time-tag}} |
+| 1003 | map         | period                             | {{-time-tag}} |
 {: #timetags cols='r l l' title="Tag numbers for date and time"}
 
-TO DO: Wait for registration for 100 and 1004 to have completed.
+Note that tags 100 and 1004 are for calendar dates that are not
+anchored to a specific time zone; they are meant to specify calendar
+dates as perceived by humans, e.g. for use in personal identification
+documents.
+Converting such a calendar date into a specific point in time needs the
+addition of a time-of-day (for which a CBOR tag is outstanding) and
+timezone information (also outstanding).  Alternatively, a calendar
+date plus timezone information can be converted into a time period
+(range of time values given by the starting and the ending time); note
+that these time periods are not always exactly 24 h (86400 s) long.
 
+{{?RFC8943}} does not suggest CDDL {{-cddl}} type names for the two tags.
+We suggest copying the definitions in {{time-tags-cddl}} into
+application-specific CDDL as needed.
+
+~~~ cddl
+caldate = #6.100(int) ; calendar date as a number of days from 1970-01-01
+tcaldate = #6.1004(tstr) ; calendar date as an RFC 3339 full-date string
+~~~
+{: #time-tags-cddl title="CDDL for calendar date tags (RFC8943)"}
+
+Tag 1001 extends tag 1 by additional information (such as picosecond
+resolution) and allows the use of Decimal and Bigfloat numbers for the
+time.
 
 # Platform-oriented
 
@@ -448,7 +470,7 @@ Required space, with the present document as the specification reference.
 Security Considerations
 ============
 
-The security considerations of RFC 7049 apply; the tags discussed here
+The security considerations of {{-bis}} apply; the tags discussed here
 may also have specific security considerations that are mentioned in
 their specific sections above.
 
