@@ -25,7 +25,9 @@ author:
     phone: +49-421-218-63921
     email: cabo@tzi.org
 contributor:
-  - name: Many
+  - name: Peter Occil
+    email: poccil14 at gmail dot com
+  - name: Many More
     org: To do
 
 
@@ -37,6 +39,8 @@ normative:
 
 informative:
   RFC4122:
+  RFC8742: seq
+  RFC2045: mime
 
 --- abstract
 
@@ -133,6 +137,20 @@ convenience only.
 |         36 | UTF-8 string | MIME message                              |             2.4.4.3 |
 |      55799 | multiple     | Self-describe CBOR                        |               2.4.5 |
 {: #origtags title="Tag numbers defined in RFC 7049"}
+
+## Tags Related to Those Defined in RFC 7049 {#related-tags}
+
+Separately registered tags that are directly related to the tags
+predefined in RFC 7049 include:
+
+* Tag 63, registered by this document, is a parallel to tag 24, with
+  the single difference that its byte string tag content carries a
+  CBOR Sequence {{-seq}} instead of a single CBOR data items.
+
+* Tag 257, registered by Peter Occil with a specification in
+  <http://peteroupc.github.io/CBOR/binarymime.html>, is a parallel to
+  tag 36, except that the tag content is a byte string, which
+  therefore can also carry binary MIME messages as per {{-mime}}.
 
 # Security
 
@@ -414,14 +432,16 @@ IANA Considerations
 ============
 
 In the registry {{-tags}},
-IANA has allocated the first and is requested to allocate the second
-and third tag in {{tab-tag-values}} from the
+IANA has allocated the first to third tag in {{tab-tag-values}} from the
 FCFS space, with the present document as the specification reference.
+IANA is requested to register the fourth tag from the Specification
+Required space, with the present document as the specification reference.
 
-|                  Tag | Data Item    | Semantics      | Reference                                        |
-|                65535 | (none valid) | always invalid | draft-bormann-cbor-notable-tags, {{invalid-tag}} |
-|           4294967295 | (none valid) | always invalid | draft-bormann-cbor-notable-tags, {{invalid-tag}} |
-| 18446744073709551615 | (none valid) | always invalid | draft-bormann-cbor-notable-tags, {{invalid-tag}} |
+|                  Tag | Data Item    | Semantics                      | Reference                                         |
+|                65535 | (none valid) | always invalid                 | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
+|           4294967295 | (none valid) | always invalid                 | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
+| 18446744073709551615 | (none valid) | always invalid                 | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
+|                   63 | byte string  | Encoded CBOR Sequence {{-seq}} | draft-bormann-cbor-notable-tags, {{related-tags}} |
 {: #tab-tag-values cols='r l l' title="Values for Tags"}
 
 Security Considerations
