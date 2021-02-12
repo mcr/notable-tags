@@ -101,11 +101,6 @@ The most up to date set of registrations is always available in the registry at 
 Terminology         {#terms}
 ------------
 
-The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
-NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
-"OPTIONAL" in this document are to be interpreted as described in
-RFC 2119 {{!RFC2119}}.
-
 The definitions of {{-bis}} apply.
 The term "byte" is used in its now customary sense as a synonym for
 "octet".
