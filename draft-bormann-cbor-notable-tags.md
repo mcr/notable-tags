@@ -91,7 +91,7 @@ Introduction        {#intro}
 ============
 
 (TO DO, expand on text from abstract here; move references here and
-neuter them in the abstract as per Section 4.3 of {{?RFC7322}}.)
+neuter them in the abstract as per {{Section 4.3 of ?RFC7322}}.)
 
 The selection of the tags presented here is somewhat arbitrary;
 considerations such as how wide the scope and area of application of a
@@ -100,8 +100,8 @@ tag definition is (i.e., is the tag specification in a state where it
 can be used).
 
 This document can only be a snapshot of a subset of the current registrations.
-The most up to date set of registrations is always available in the registry at {{-tags}}.
-
+The most up to date set of registrations is always available in the
+registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}}.
 
 Terminology         {#terms}
 ------------
@@ -393,7 +393,7 @@ time.
 ## Perl
 
 (These are actually not as Perl-specific as the title of this section
-suggests.  See also the penultimate paragraph of Section 3.4 of {{-cbor}}.)
+suggests.  See also the penultimate paragraph of {{Section 3.4 of -cbor}}.)
 
 These are all documented under `http://cbor.schmorp.de/`; the
 last pathname component is given in {{perltags}}.
@@ -485,7 +485,7 @@ there is no validity checking implemented otherwise.
 IANA Considerations
 ============
 
-In the registry {{-tags}},
+In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
 IANA has allocated the first to third tag in {{tab-tag-values}} from the
 FCFS space, with the present document as the specification reference.
 IANA has allocated the fourth tag from the Specification
