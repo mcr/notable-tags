@@ -14,9 +14,7 @@ cat: info
 pi: [toc, sortrefs, symrefs, compact, comments]
 
 author:
-  -
-    ins: C. Bormann
-    name: Carsten Bormann
+  - name: Carsten Bormann
     org: Universität Bremen TZI
     street: Postfach 330440
     city: Bremen
@@ -27,10 +25,17 @@ author:
 contributor:
   - name: Peter Occil
     email: poccil14 at gmail dot com
-  - name: Many More
+    contribution: |
+      Peter Occil registered tags 30, 264, 265, 268–270
+      ({{advanced-arithmetic}}), 38, 257, 266 and 267
+      ({{domain-specific}}), and contributed much of the text about
+      these tags in this document.
+  - name: Jane Doe
     org: To do
+    contribution: |
+      Further contributors will be listed here as text is added.
 
-
+      Plase stay tuned.
 normative:
   RFC8949: bis
   IANA.cbor-tags: tags
