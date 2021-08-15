@@ -178,7 +178,7 @@ predefined in RFC 7049 include:
 
 * Tag 63, registered by this document, is a parallel to tag 24, with
   the single difference that its byte string tag content carries a
-  CBOR Sequence {{-seq}} instead of a single CBOR data items.
+  CBOR Sequence {{-seq}} instead of a single CBOR data item.
 
 * Tag 257, registered by Peter Occil with a specification in
   <http://peteroupc.github.io/CBOR/binarymime.html>, is a parallel to
