@@ -37,7 +37,7 @@ contributor:
 
       Plase stay tuned.
 normative:
-  RFC8949: bis
+  RFC8949: cbor
   IANA.cbor-tags: tags
   RFC8610: cddl
 
@@ -49,13 +49,13 @@ informative:
   I-D.bormann-cbor-time-tag: time-tag
 --- abstract
 
-The Concise Binary Object Representation (CBOR, RFC 7049) is a data
+The Concise Binary Object Representation (CBOR, RFC 8949) is a data
 format whose design goals include the possibility of extremely small
 code size, fairly small message size, and extensibility without the
 need for version negotiation.
 
 In CBOR, one point of extensibility is the definition of CBOR tags.
-RFC 7049 and its revision 7049bis define a basic set of tags as well
+RFC 8949's original edition, RFC 7049, defined a basic set of tags as well
 as a registry that can be used to contribute additional tag
 definitions {{-tags}}.  Since RFC 7049 was published, some 80 tag
 definitions have been added to that registry.
@@ -106,7 +106,7 @@ The most up to date set of registrations is always available in the registry at 
 Terminology         {#terms}
 ------------
 
-The definitions of {{-bis}} apply.
+The definitions of {{-cbor}} apply.
 The term "byte" is used in its now customary sense as a synonym for
 "octet".
 Where bit arithmetic is explained, this document uses the notation
@@ -114,7 +114,7 @@ familiar from the programming language C (including C++14's 0bnnn
 binary literals), except that the operator "\*\*" stands for
 exponentiation.
 
-# RFC 7049 (CBOR)
+# RFC 7049 (original CBOR specification)
 
 {{-orig}} defines a number of tags that are listed here for
 convenience only.
@@ -362,7 +362,7 @@ time.
 ## Perl
 
 (These are actually not as Perl-specific as the title of this section
-suggests.  See also the penultimate paragraph of Section 3.4 of {{-bis}}.)
+suggests.  See also the penultimate paragraph of Section 3.4 of {{-cbor}}.)
 
 These are all documented under `http://cbor.schmorp.de/`; the
 last pathname component is given in {{perltags}}.
@@ -470,7 +470,7 @@ Required space, with the present document as the specification reference.
 Security Considerations
 ============
 
-The security considerations of {{-bis}} apply; the tags discussed here
+The security considerations of {{-cbor}} apply; the tags discussed here
 may also have specific security considerations that are mentioned in
 their specific sections above.
 
