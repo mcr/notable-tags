@@ -152,6 +152,37 @@ predefined in RFC 7049 include:
   tag 36, except that the tag content is a byte string, which
   therefore can also carry binary MIME messages as per {{-mime}}.
 
+## Tags from RFC 7049 not listed in RFC 8949
+
+<!-- Note that xml2rfc is broken for {{Section G.3 of -cbor}}, so we -->
+<!-- work around: -->
+
+{{section-g.3-9 (Section G.3)<RFC8949}} of {{-cbor}} states:
+
+{:quote}
+>
+   Tag 35 is not defined by this document; the registration based on the
+   definition in RFC 7049 remains in place.
+
+The reason for this exclusion is that the definition of Tag 35 in
+{{Section 2.4.4.3 of -orig}}, leaves too much open to ensure interoperability:
+
+{:quote}
+>
+  Tag 35 is for regular expressions in Perl Compatible Regular
+  Expressions (PCRE) / JavaScript syntax [ECMA262].
+
+Not only are two partially incompatible specifications given for the
+semantics, JavaScript regular expressions have also developed
+significantly within the decade since JavaScript 5.1 (which was
+referenced by {{-orig}}),
+making it less reliable to assume that a producing application will
+manage to stay within that 2011 subset.
+
+Nonetheless, the registration is in place, so it is available for
+applications that simply want to mark a text string as being a regular
+expression roughly of the PCRE/Javascript flavor families.
+
 # Security
 
 A number of CBOR tags are defined in security specifications that make
