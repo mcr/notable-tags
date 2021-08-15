@@ -47,6 +47,32 @@ informative:
   RFC7049: orig
   RFC8742: seq
   I-D.bormann-cbor-time-tag: time-tag
+  C:
+    target: https://www.iso.org/standard/74528.html
+    title: Information technology - Programming languages - C
+    author:
+    - org: International Organization for Standardization
+    date: 2018-06
+    seriesinfo:
+      ISO/IEC: 9899:2018
+  Cplusplus20:
+    target: https://isocpp.org/files/papers/N4860.pdf
+    title: Programming languages - C++
+    author:
+    - org: International Organization for Standardization
+    date: 2020-03
+    seriesinfo:
+      ISO/IEC: ISO/IEC JTC1 SC22 WG21 N 4860
+  IEEE754:
+    target: https://ieeexplore.ieee.org/document/8766229
+    title: IEEE Standard for Floating-Point Arithmetic
+    author:
+    - org: IEEE
+    date: false
+    seriesinfo:
+      IEEE Std: 754-2019
+      DOI: 10.1109/IEEESTD.2019.8766229
+
 --- abstract
 
 The Concise Binary Object Representation (CBOR, RFC 8949) is a data
@@ -110,9 +136,16 @@ The definitions of {{-cbor}} apply.
 The term "byte" is used in its now customary sense as a synonym for
 "octet".
 Where bit arithmetic is explained, this document uses the notation
-familiar from the programming language C (including C++14's 0bnnn
-binary literals), except that the operator "\*\*" stands for
-exponentiation.
+familiar from the programming language C ({{C}}, including C++14's `0bnnn`
+binary literals {{Cplusplus20}}), except that superscript notation
+(example for two to the power of 64: 2<sup>64</sup>) denotes exponentiation; in
+the plain text version of this document, superscript notation is
+rendered in paragraph text by C-incompatible surrogate notation as
+seen in this example.
+Ranges expressed using `..` are inclusive of the limits given.
+<!-- , and in display math by a crude plain text representation. -->
+Type names such as "int", "bigint" or "decfrac" are taken from
+{{Section D of -cddl}}, the Concise Data Definition Language (CDDL).
 
 # RFC 7049 (original CBOR specification)
 
