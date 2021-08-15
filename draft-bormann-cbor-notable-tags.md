@@ -47,6 +47,8 @@ informative:
   RFC7049: orig
   RFC8742: seq
   I-D.bormann-cbor-time-tag: time-tag
+  RFC7493: ijson
+  RFC8259: json
   C:
     target: https://www.iso.org/standard/74528.html
     title: Information technology - Programming languages - C
@@ -260,7 +262,7 @@ the context of the Network Configuration Protocol (NETCONF)
 {{?RFC6241}}, now widely used for modeling management and
 configuration information.  {{?RFC7950}} defines an XML-based
 representation format, and {{?RFC7951}} defines a JSON-based
-{{?RFC8259}} representation format for YANG.
+{{-json}} representation format for YANG.
 
 YANG-CBOR {{!I-D.ietf-core-yang-cbor}} is a representation format for
 YANG data in CBOR.
@@ -304,8 +306,6 @@ beyond those built into CBOR and defined by tags in {{-orig}}.
 These are all documented under `http://peteroupc.github.io/CBOR/`; the
 last pathname component is given in {{arithtags}}.
 
-(TO DO: Obtain permission to copy the definitions here.)
-
 | Tag number | Tag content | Short Description                         | Reference     |
 |         30 | array       | Rational number                           | rational.html |
 |        264 | array       | Decimal fraction with arbitrary  exponent | bigfrac.html  |
@@ -314,6 +314,77 @@ last pathname component is given in {{arithtags}}.
 |        269 | array       | Extended bigfloat                         | extended.html |
 |        270 | array       | Extended rational number                  | extended.html |
 {: #arithtags title="Tags for advanced arithmetic"}
+
+CBOR's basic generic data model ({{Section 2 of -cbor}}) has a number
+system with limited-range integers (major types 0 and 1:
+-2<sup>64</sup>..2<sup>64</sup>-1) and floating point numbers that
+cover binary16, binary32, and binary64 (including non-finites) from
+{{IEEE754}}.
+With the tags defined with {{-orig}}, the extended generic data model
+({{Section 2.1 of -cbor}}) adds unlimited-range integers (tag numbers 2
+and 3, "bigint" in CDDL) as well as floating point values using the bases
+2 (tag number 5, "bigfloat") and 10 (tag number 4, "decfrac").
+
+This pre-defined number system has a number of limitations that are
+addressed in three of the tags discussed here:
+
+* Tag number 30 allows the representation of rational numbers as a
+  ratio of two integers: a numerator (usually written as the top part
+  of a fraction), and a denominator (the bottom part), where both
+  integers can be limited-range basic and unlimited-range integers.
+  The mathematical value of a rational number is the numerator divided
+  by the denominator.
+  This tag can express all numbers that the extended generic data
+  model of {{-orig}} can express, except for non-finites {{IEEE754}}; it
+  also can express rational numbers that cannot be expressed with
+  denominators that are a power of 2 or a power of 10.
+
+  For example, the rational number 1/3 is encoded:
+
+  ~~~cbor-pretty
+    d8 1e      ---- Tag 30
+       82      ---- Array length 2
+          01   ---- 1
+          03   ---- 3
+  ~~~
+
+  Many programming languages have built-in support for rational
+  numbers or support for them is included in their standard libraries;
+  tag number 30 is a way for these platforms to interchange these
+  rational numbers in CBOR.
+
+* Tag numbers 4 and 5 are limited in the range of the (base 10 or base
+  2) exponents by the limited-range integers in the basic generic data
+  model.  Tag numbers 264 and 265 are exactly equivalent to 4 and 5,
+  respectively, but also allow unlimited-range integers as exponents.
+  While applications for floating point numbers with exponents outside
+  the CBOR basic integer range are limited, tags 264 and 265 allow
+  unlimited roundtripping with other formats that allow very large or
+  very small exponents, such as those JSON {{-json}} can provide if the
+  limitations of I-JSON {{-ijson}} do not apply.
+
+The tag numbers 268..270 extend these tags further by providing a way
+to express non-finites within a tag with this number.  This does not
+increase the expressiveness of the data model (the non-finites can
+already be expressed using major type 7 floating point numbers), but
+does allow both finite and non-finite values to carry the same tag.
+In most applications, a choice that includes some of the three tags
+30, 264, 265 for finite values and major type 7 floating point values
+for non-finites (as well as possibly other parts of the CBOR number
+system) will be the preferred solution.
+
+This document suggests using the CDDL typenames defined in
+{{arith-tags-cddl}} for the three most useful tag numbers in this section.
+
+~~~ cddl
+rational = #6.30([numerator: integer, denominator: integer .ne 0])
+rational_of<N,D> = #6.30([numerator: N, denominator: D])
+; the value 1/3 can be notated as rational_of<1, 3>
+
+extended_decfrac = #6.264([e10: integer, m: integer])
+extended_bigfloat = #6.265([e2: integer, m: integer])
+~~~
+{: #arith-tags-cddl title="CDDL for extended arithmetic tags"}
 
 ## Variants of undefined
 
