@@ -433,31 +433,20 @@ reproduced in {{arraytags}}.
 
 # Domain-Specific
 
+(TO DO: Obtain permission to copy the definitions here; explain how
+tags 52 and 54 essentially obsolete 260/261.)
 
-(TO DO: Obtain permission to copy the definitions here; create proper table.)
+| Tag number | Tag content | Short Description                                               | Reference                                                              | Author         |
+|         37 | byte string | Binary UUID ({{Section 4.1.2 of RFC4122}})                        | https://github.com/lucas-clemente/cbor-specs/blob/master/uuid.md       | Lucas Clemente |
+|         38 | array       | Language-tagged string                                          | http://peteroupc.github.io/CBOR/langtags.html                          | Peter Occil    |
+|        257 | byte string | Binary MIME message                                             | http://peteroupc.github.io/CBOR/binarymime.html                        | Peter Occil    |
+|        260 | byte string | Network Address (IPv4 or IPv6 or MAC Address)                   | http://www.employees.org/~ravir/cbor-network.txt                       | Ravi Raju      |
+|        261 | map         | Network Address Prefix (IPv4 or IPv6 Address + Mask Length)     | https://github.com/toravir/CBOR-Tag-Specs/blob/master/networkPrefix.md | Ravi Raju      |
+|        263 | byte string | Hexadecimal string                                              | https://github.com/toravir/CBOR-Tag-Specs/blob/master/hexString.md     | Ravi Raju      |
+|        266 | text string | Internationalized resource identifier (IRI)                     | https://peteroupc.github.io/CBOR/iri.html                              | Peter Occil    |
+|        267 | text string | Internationalized resource identifier reference (IRI reference) | https://peteroupc.github.io/CBOR/iri.html                              | Peter Occil    |
 
 
-~~~
-37                            byte string   Binary UUID ([RFC4122] section    [https://github.com/lucas-clemente/cbor-specs/blob/master/uuid.md][Lucas_Clemente]
-                                            4.1.2)
-38                            array         Language-tagged string            [http://peteroupc.github.io/CBOR/langtags.html][Peter_Occil]
-257                           byte string   Binary MIME message               [http://peteroupc.github.io/CBOR/binarymime.html][Peter_Occil]
-
-
-260                           byte string   Network Address (IPv4 or IPv6 or  [http://www.employees.org/~ravir/cbor-network.txt][Ravi_Raju]
-                                            MAC Address)
-                              map           Network Address Prefix (IPv4 or
-261                           (IPAddress +  IPv6 Address + Mask Length)       [https://github.com/toravir/CBOR-Tag-Specs/blob/master/networkPrefix.md][Ravi_Raju]
-                              Mask Length)
-
-263                           byte string   Hexadecimal string                [https://github.com/toravir/CBOR-Tag-Specs/blob/master/hexString.md][Ravi_Raju]
-
-266                           text string   Internationalized resource        [https://peteroupc.github.io/CBOR/iri.html][Peter_Occil]
-                                            identifier (IRI)
-                                            Internationalized resource
-267                           text string   identifier reference (IRI         [https://peteroupc.github.io/CBOR/iri.html][Peter_Occil]
-                                            reference)
-~~~
 
 ## Extended Time Formats
 
@@ -551,26 +540,16 @@ be represented as a CBOR text string
 
 # Application-specific
 
-(TO DO: Obtain permission to copy the definitions here; create proper table.)
+(TO DO: Obtain permission to copy the definitions here.)
 
-
-~~~
-39                            multiple      Identifier                        [https://github.com/lucas-clemente/cbor-specs/blob/master/id.md][Lucas_Clemente]
-42                            byte string   IPLD content identifier           [https://github.com/ipld/cid-cbor/][Volker_Mische]
-
-103                           array         Geographic Coordinates            [https://github.com/allthingstalk/cbor/blob/master/CBOR-Tag103-Geographic-Coordinates.md][Danilo_Vidovic]
-104                           multiple      Geographic Coordinate Reference   [draft-clarke-cbor-crs]
-                                            System WKT or EPSG number
-
-120                           multiple      Internet of Things Data Point     [https://github.com/allthingstalk/cbor/blob/master/CBOR-Tag120-Internet-of-Things-Data-Points.md][Danilo_Vidovic]
-
-
-
-258                           array         Mathematical finite set           [https://github.com/input-output-hk/cbor-sets-spec/blob/master/CBOR_SETS.md][Alfredo_Di_Napoli]
-                                            Map datatype with key-value
-259                           map           operations (e.g.                  [https://github.com/shanewholloway/js-cbor-codec/blob/master/docs/CBOR-259-spec--explicit-maps.md][Shane_Holloway]
-                                            `.get()/.set()/.delete()`)
-~~~
+| Tag number | Tag content | Short Description                                                          | Reference                                                                                         | Author            |
+|         39 | multiple    | Identifier                                                                 | [https://github.com/lucas-clemente/cbor-specs/blob/master/id.md                                   | Lucas Clemente    |
+|         42 | byte string | IPLD content identifier                                                    | [https://github.com/ipld/cid-cbor/                                                                | Volker Mische     |
+|        103 | array       | Geographic Coordinates                                                     | [https://github.com/allthingstalk/cbor/blob/master/CBOR-Tag103-Geographic-Coordinates.md          | Danilo Vidovic    |
+|        104 | multiple    | Geographic Coordinate Reference System  WKT or EPSG number                 | {{?I-D.clarke-cbor-crs}}                                                                           |                   |
+|        120 | multiple    | Internet of Things Data Point                                              | [https://github.com/allthingstalk/cbor/blob/master/CBOR-Tag120-Internet-of-Things-Data-Points.md  | Danilo Vidovic    |
+|        258 | array       | Mathematical finite set                                                    | [https://github.com/input-output-hk/cbor-sets-spec/blob/master/CBOR_SETS.md                       | Alfredo Di Napoli |
+|        259 | map         | Map  datatype with key-value  operations (e.g. `.get ()/.set()/.delete()`) | [https://github.com/shanewholloway/js-cbor-codec/blob/master/docs/CBOR-259-spec--explicit-maps.md | Shane Holloway    |
 
 # Implementation aids
 
@@ -599,10 +578,10 @@ FCFS space, with the present document as the specification reference.
 IANA has allocated the fourth tag from the Specification
 Required space, with the present document as the specification reference.
 
-|                  Tag | Data Item    | Semantics                      | Reference                                         |
-|                65535 | (none valid) | always invalid                 | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
-|           4294967295 | (none valid) | always invalid                 | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
-| 18446744073709551615 | (none valid) | always invalid                 | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
+|                  Tag | Data Item    | Semantics                    | Reference                                       |
+|                65535 | (none valid) | always invalid               | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
+|           4294967295 | (none valid) | always invalid               | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
+| 18446744073709551615 | (none valid) | always invalid               | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
 |                   63 | byte string  | Encoded CBOR Sequence {{-seq}} | draft-bormann-cbor-notable-tags, {{related-tags}} |
 {: #tab-tag-values cols='r l l' title="Values for Tags"}
 
@@ -618,6 +597,8 @@ their specific sections above.
 Acknowledgements
 ================
 {: numbered="no"}
+
+(Many, TBD)
 
 <!--  LocalWords:  CBOR extensibility IANA uint sint IEEE endian
  -->
