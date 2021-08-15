@@ -46,9 +46,9 @@ informative:
   RFC4122: uuid
   RFC7049: orig
   RFC8742: seq
-  I-D.bormann-cbor-time-tag: time-tag
   RFC7493: ijson
   RFC8259: json
+  I-D.ietf-cbor-time-tag: time-tag
   C:
     target: https://www.iso.org/standard/74528.html
     title: Information technology - Programming languages - C
