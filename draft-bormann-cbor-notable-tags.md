@@ -289,6 +289,10 @@ As an example for how experimental protocols can make use of CBOR tag
 definitions, the RAINS (Another Internet Naming Service) Protocol
 Specification defines tag number 15309736 for a RAINS Message
 {{?I-D.trammell-rains-protocol}}.
+(The seemingly random tag number was chosen so that, when represented
+as an encoded CBOR tag
+argument, it contains the Unicode character <u format="lit-num">雨</u>
+in UTF-8, which represents rain in a number of languages.)
 
 
 # Datatypes
