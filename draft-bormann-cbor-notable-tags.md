@@ -3,13 +3,14 @@ title: >
   Notable CBOR Tags
 abbrev: Notable CBOR Tags
 docname: draft-bormann-cbor-notable-tags-latest
-# date: 2021-02-12
+# date: 2022-02-13
 
 stand_alone: true
 
 ipr: trust200902
 keyword: Internet-Draft
 cat: info
+submissiontype: IETF
 
 pi: [toc, sortrefs, symrefs, compact, comments]
 
@@ -36,12 +37,18 @@ contributor:
       Further contributors will be listed here as text is added.
 
       Plase stay tuned.
+
 normative:
-  RFC8949: cbor
+  STD94:
+    -: cbor
+    =: RFC8949
   IANA.cbor-tags: tags
   RFC8610: cddl
 
 informative:
+  STD63:
+    -: utf8
+    =: RFC3629
   RFC2045: mime
   RFC4122: uuid
   RFC7049: orig
@@ -135,8 +142,10 @@ Terminology         {#terms}
 ------------
 
 The definitions of {{-cbor}} apply.
-The term "byte" is used in its now customary sense as a synonym for
-"octet".
+Specifically: The term "byte" is used in its now customary sense as a synonym for
+"octet"; "byte strings" are CBOR data items carrying a sequence of
+zero or more (binary) bytes, while "text strings" are CBOR data items carrying a
+sequence of zero or more Unicode code points, encoded in UTF-8 {{-utf8}}.
 Where bit arithmetic is explained, this document uses the notation
 familiar from the programming language C ({{C}}, including C++14's `0bnnn`
 binary literals {{Cplusplus20}}), except that superscript notation
@@ -189,10 +198,10 @@ predefined in RFC 7049 include:
 
 ## Tags from RFC 7049 not listed in RFC 8949
 
-<!-- Note that xml2rfc is broken for {{Section G.3 of -cbor}}, so we -->
-<!-- work around: -->
+<!-- Note that xml2rfc generates a broken reference for {{Appendix G.3 of -cbor}}, so we -->
+<!-- work around manually: -->
 
-{{section-g.3-9 (Section G.3)<RFC8949}} of {{-cbor}} states:
+{{section-g.3-9 (Appendix G.3)<STD94}} of {{-cbor}} states:
 
 {:quote}
 >
@@ -205,12 +214,12 @@ The reason for this exclusion is that the definition of Tag 35 in
 {:quote}
 >
   Tag 35 is for regular expressions in Perl Compatible Regular
-  Expressions (PCRE) / JavaScript syntax [ECMA262].
+  Expressions (PCRE) / JavaScript syntax \[ECMA262].
 
 Not only are two partially incompatible specifications given for the
 semantics, JavaScript regular expressions have also developed
 significantly within the decade since JavaScript 5.1 (which was
-referenced by {{-orig}}),
+referenced as "ECMA262" by {{-orig}}),
 making it less reliable to assume that a producing application will
 manage to stay within that 2011 subset.
 
@@ -283,7 +292,7 @@ protocol elements.
 ## DOTS
 
 DDoS Open Threat Signaling (DOTS) defines tag number 271 for the DOTS
-signal channel object in {{!RFC8782}}.
+signal channel object in {{!RFC9132}}.
 
 ## RAINS
 
@@ -304,7 +313,7 @@ in UTF-8, which represents rain in a number of languages.)
 A number of tags have been registered for arithmetic representations
 beyond those built into CBOR and defined by tags in {{-orig}}.
 These are all documented under `http://peteroupc.github.io/CBOR/`; the
-last pathname component is given in {{arithtags}}.
+last pathname component for the URL is given in {{arithtags}}.
 
 | Tag number | Tag content | Short Description                         | Reference     |
 |         30 | array       | Rational number                           | rational.html |
