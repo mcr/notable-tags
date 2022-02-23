@@ -638,7 +638,7 @@ for *alternatives* of multiple values. Combinations are expressed in
 CBOR using lists or maps.
 
 Most programming languages have a notion of data consisting of
-combinations of data values, often called records or objects. Many
+combinations of data values, often called records, structs or objects. Many
 programming languages also have a notion of data consisting of multiple
 alternative data values. For example C has unions, and other languages
 have "tagged" unions (where it is always clear which alternative is in
