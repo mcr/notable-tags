@@ -31,6 +31,11 @@ contributor:
       ({{advanced-arithmetic}}), 38, 257, 266 and 267
       ({{domain-specific}}), and contributed much of the text about
       these tags in this document.
+  - name: Duncan Coutts
+    email: duncan@well-typed.com
+  - name: Michael Peyton Jones
+    email: me@michaelpj.com
+
   - name: Jane Doe
     org: To do
     contribution: |
@@ -510,8 +515,8 @@ last pathname component is given in {{perltags}}.
 |   Tag | Data Item        | Semantics                                                                       | Reference      |
 |   256 | multiple         | mark value as having string references                                          | stringref      |
 |    25 | unsigned integer | reference the nth previously seen string                                        | stringref      |
-|    26 | array            | Serialised Perl object with classname and constructor arguments                 | perl-object    |
-|    27 | array            | Serialised language-independent object with type name and constructor arguments | generic-object |
+|    26 | array            | Serialized Perl object with classname and constructor arguments                 | perl-object    |
+|    27 | array            | Serialized language-independent object with type name and constructor arguments | generic-object |
 |    28 | multiple         | mark value as (potentially) shared                                              | value-sharing  |
 |    29 | unsigned integer | reference nth marked value                                                      | value-sharing  |
 | 22098 | multiple         | hint that indicates an additional level of indirection                          | indirection    |
@@ -560,6 +565,161 @@ be represented as a CBOR text string
 |        258 | array       | Mathematical finite set                                                    | [https://github.com/input-output-hk/cbor-sets-spec/blob/master/CBOR_SETS.md                       | Alfredo Di Napoli |
 |        259 | map         | Map  datatype with key-value  operations (e.g. `.get ()/.set()/.delete()`) | [https://github.com/shanewholloway/js-cbor-codec/blob/master/docs/CBOR-259-spec--explicit-maps.md | Shane Holloway    |
 
+## Enumerated Alternative Data Items
+
+(Original Text for this section was contributed by Duncan Coutts and
+Michael Peyton Jones; all errors are the author's.)
+
+A set of CBOR tag numbers has been allocated (to do, {{iana}}) for
+encoding data composed of enumerated alternatives:
+
+|       Tags | Data Item          | Meaning                                 |
+|   121..127 | any                | alternatives 0..6, 1+1 encoding         |
+| 1280..1400 | any                | alternatives 7..127, 1+2 encoding       |
+|        101 | array \[uint, any] | alternatives as given by the uint + 128 |
+{: #tab-tag-enum cols='r l l' title="Tags for Enumerated Alternative Data Items"}
+
+The tags defined in this section are for encoding data that can be
+in one of a number of different enumerated forms.
+
+For example data representing the result of some action might be either
+a failure with some failure detail, or a success with some result. In
+this example there are two cases, the failure case and the success case,
+and we can enumerate them as 0 and 1.
+
+In general the number of alternatives, and what data is expected in each
+alternative case is entirely application dependent.
+
+The tags defined in this specification allow the encoding of any number
+of alternatives, but provide compact encoding for the common cases of
+low numbers of alternatives:
+
+-   Alternatives 0..6 can be encoded in 2 bytes;
+
+-   Alternatives 7..127 can be encoded in 3 bytes;
+
+-   Alternatives 128+ can be encoded in 3-12 bytes.
+
+There are no special considerations for deterministic encoding
+{{Section 4.2 of STD94}}: The case numbers covered by each tag do not
+overlap; particularly, tag 101 encoding starts where the more compact
+special encodings for 0..6 and 7..127 end.
+
+### Semantics
+
+The value consists of a case number and a case body. The case number is
+an unsigned integer that indicates which case out of the set of
+alternatives is used. The case body is any CBOR data value.
+
+In a setting where the application uses a schema (formally or
+informally), then there will be an appropriate sub-schema for each case
+in the set of alternatives. The representation of the case body should
+comply with the schema corresponding to the case number used.
+
+To continue the example above about representing failure or success,
+suppose that the failure detail consists of an integer code and a
+string, and suppose that the successful result is a byte string. A
+failure value will use case 0 and the case body will be a CBOR list
+containing an integer and a text string. Alternatively, a success value
+will use case 1 and the body will be a single CBOR byte string.
+
+Decoders that enforce a schema must check the case number is within the
+range of cases allowed, and that the case body follows the schema for
+the supplied case number. Generic decoders should allow any case number
+and any CBOR data value for the case body.
+
+### Rationale
+
+CBOR has direct support for *combinations* of multiple values but not
+for *alternatives* of multiple values. Combinations are expressed in
+CBOR using lists or maps.
+
+Most programming languages have a notion of data consisting of
+combinations of data values, often called records or objects. Many
+programming languages also have a notion of data consisting of multiple
+alternative data values. For example C has unions, and other languages
+have "tagged" unions (where it is always clear which alternative is in
+use).
+
+Crucially for this set of tags, the set of alternatives must be closed
+and ordered. This allows encoding using an unsigned number to distinguish
+each case.
+
+Note that this does *not* correspond to the notion in some programming
+languages of classes and subclasses since in that context the set of
+alternatives is open and unordered. Alternatives of this kind are
+well-supported by tag 27 "Serialized language-independent object with
+type name and constructor arguments".
+
+In functional programming languages, the primary way of forming new data
+types is to enumerate a set of alternatives (each of which may be a
+record). Such forms of data are also supported in hybrid functional
+languages or languages with functional features.
+
+Thus, in some applications, it is very common to have data making use of
+alternatives, and it is worth finding a compact encoding, at least for
+the common cases. Just as most records are small, most alternatives are
+also small.
+
+In this specification we reserve 7 values in the 2-byte part of the
+available tag encoding space for alternatives 0..6 which are by far the
+most common. We reserve a range of 121 values in the 3-bytes tag
+encoding space. To cover the general case we use an encoding using a
+pair consisting of an unsigned integer and the case body, the first 24
+of which also result in a 3-byte encoding.
+
+### Examples
+
+To elaborate on the example from the introduction, we have a "result"
+that is a failure or success, where:
+
+-   the failure detail consists of an integer code and a string;
+-   the successful result is a byte string.
+
+This corresponds to the following schema, in CDDL notation:
+
+~~~ cddl
+result = #6.121([int, text])
+       / #6.122(bytes)
+~~~
+
+Example values:
+
+~~~ cbor-diag
+121([3, "the printer is on fire"])
+~~~
+~~~ cbor-diag
+122(h'ff00')
+~~~
+
+As a second example, here is one based on a data type defined within the
+Haskell programming language, representing a simple expression tree.
+
+~~~ haskell
+-- A data type representing simple arithmetic expressions
+
+data Expr = Lit Int -- integer literal
+| Add Expr Expr -- addition
+| Sub Expr Expr -- subtraction
+| Neg Expr -- unary negation
+| Mul Expr Expr -- multiplication
+| Div Expr Expr -- integer division
+~~~
+
+In CDDL notation, and using the tags in this specification, such data
+could be encoded using this schema:
+
+~~~ cddl
+; A data type representing simple arithmetic expressions
+
+expr = 121(int)          ; integer literal
+     / 122([expr, expr]) ; addition
+     / 123([expr, expr]) ; subtraction
+     / 124(expr)         ; unary negation
+     / 125([expr, expr]) ; multiplication
+     / 126([expr, expr]) ; integer division
+~~~
+
 # Implementation aids
 
 ## Invalid Tag
@@ -578,7 +738,7 @@ data items.  Generic CBOR decoder implementations are encouraged to
 raise an error if an Invalid Tag occurs in a CBOR data item even if
 there is no validity checking implemented otherwise.
 
-IANA Considerations
+IANA Considerations {#iana}
 ============
 
 In the registry "{{cbor-tags (CBOR Tags)<IANA.cbor-tags}}" {{IANA.cbor-tags}},
@@ -593,6 +753,9 @@ Required space, with the present document as the specification reference.
 | 18446744073709551615 | (none valid) | always invalid               | draft-bormann-cbor-notable-tags, {{invalid-tag}}  |
 |                   63 | byte string  | Encoded CBOR Sequence {{-seq}} | draft-bormann-cbor-notable-tags, {{related-tags}} |
 {: #tab-tag-values cols='r l l' title="Values for Tags"}
+
+In addition, IANA is requested to allocate the tags from
+{{tab-tag-enum}}, with a reference to the present document.
 
 Security Considerations
 ============
