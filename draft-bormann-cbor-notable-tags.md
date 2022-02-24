@@ -606,7 +606,7 @@ overlap; particularly, tag 101 encoding starts where the more compact
 special encodings for 0..6 and 7..127 end.
 
 For cases 0..6 and 7..127, the tag value indicates the value of the alternative.
-For cases 128+, then a single tag value announces the format, and the value within the array indicates the value.
+For cases 128+, a single tag number is used with an enclosed two-element array that contains the case number and the value of the alternative.
 
 ### Semantics
 
